@@ -1,5 +1,3 @@
-import React from 'react';
-
 import LeagueTable from '../features/league-table/LeagueTable';
 
 export default function Home() {
