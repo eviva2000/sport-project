@@ -1,69 +1,294 @@
-# React + TypeScript + Vite
+# ⚽ Sports League Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive React application for browsing and exploring sports leagues from around the world. Built with TypeScript, React Query, and styled-components for optimal performance and user experience.
 
-Currently, two official plugins are available:
+## 🌟 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🏠 League Browser
 
-## Expanding the ESLint configuration
+- **Comprehensive League List**: Browse 50+ sports leagues from various sports
+- **Real-time Search**: Instantly search leagues by name with live filtering
+- **Sport Filtering**: Filter leagues by sport type (Soccer, Basketball, Motorsport, etc.)
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 📱 Mobile-First Design
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Touch-Friendly Interface**: Large touch targets and mobile-optimized controls
+- **Custom Dropdown**: Native mobile dropdown with large, easy-to-tap options
+- **Responsive Table**: Desktop grid view transforms to mobile card layout
+- **Zebra Striping**: Alternating row colors for better readability on desktop
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### ⚡ Performance Optimizations
+
+- **React Query Caching**: Intelligent data caching with 10-15 minute stale times
+- **Memoization**: Optimized filtering and search with React.memo and useMemo
+- **Background Refetching**: Automatic data updates without blocking UI
+
+## 🛠️ Tech Stack
+
+### Frontend Framework
+
+- **React 18** - Modern React with hooks and concurrent features
+- **TypeScript** - Type-safe development with full IntelliSense
+- **Vite** - Lightning-fast build tool and development server
+
+### Styling & UI
+
+- **Styled Components** - CSS-in-JS with theme support and responsive design
+- **Google Fonts (Raleway)** - Modern, clean typography
+- **Responsive Design** - Mobile-first approach with CSS Grid and Flexbox
+
+### State Management & Data Fetching
+
+- **TanStack Query (React Query)** - Powerful data synchronization and caching
+- **Custom Hooks** - Reusable data fetching logic
+- **React Router** - Client-side routing with URL parameters
+
+### Code Quality
+
+- **ESLint** - Code linting and style enforcement
+- **TypeScript** - Static type checking
+- **React.memo** - Performance optimization for components
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js** (v16 or higher)
+- **npm** or **yarn**
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd sports-league-explorer
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Set up environment variables**
+
+   ```bash
+   # Copy the example environment file
+   cp .env.example .env
+   
+   # The .env file should contain:
+   VITE_API_URL="https://www.thesportsdb.com/api/v1/json/3/all_leagues.php"
+   VITE_SEASON_API_URL="https://www.thesportsdb.com/api/v1/json/3/search_all_seasons.php?badge=1&id="
+   ```
+
+4. **Start the development server**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. **Open your browser**
+   Navigate to `http://localhost:5173`
+
+
+
+## 🎨 Design System
+
+### Color Palette
+
+- **Primary Blue**: `#007bff` - Interactive elements and focus states
+- **Grey Scale**: `#f8f9fa`, `#e9ecef`, `#666`, `#333` - Backgrounds and text
+- **Success/Error**: Standard semantic colors for states
+
+### Typography
+
+- **Font Family**: Raleway (Google Fonts)
+- **Font Weights**: 400 (regular), 500 (medium), 600 (semi-bold), 700 (bold)
+- **Responsive Sizing**: 14px-22px based on screen size
+
+### Responsive Breakpoints
+
+- **Desktop**: 769px and above
+- **Tablet**: 768px and below
+- **Mobile**: 480px and below
+
+
+### Layout Adaptations
+
+- **Desktop**: 3-column grid layout with hover effects
+- **Mobile**: Card-based layout with stacked information
+- **Navigation**: Full-width buttons and touch-friendly spacing
+
+## 🔧 API Integration
+
+### Data Sources
+
+- **League List**: TheSportsDB API for comprehensive league data
+- **League Details**: Season and badge information per league
+- **Caching Strategy**: 10-15 minute cache with background updates
+
+### Error Handling
+
+- **Network Errors**: Automatic retry with exponential backoff
+- **Loading States**: Skeleton screens and loading indicators
+- **Fallback UI**: Graceful degradation for missing data
+
+## 🚀 Performance Features
+
+### Caching Strategy
+
+```typescript
+// League data: 10 minutes stale time
+staleTime: 10 * 60 * 1000;
+
+// Season data: 15 minutes stale time
+staleTime: 15 * 60 * 1000;
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Optimization Techniques
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **React.memo**: Prevents unnecessary re-renders
+- **useMemo**: Memoized filtering and sorting
+- **useCallback**: Stable function references
+- **Code Splitting**: Lazy loading for better initial load times
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🧪 Testing
+
+```bash
+# Run tests
+npm run test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode
+npm run test:watch
 ```
+
+## 🏗️ Building for Production
+
+```bash
+# Build the application
+npm run build
+
+# Preview the production build
+npm run preview
+```
+
+
+## 🤖 AI-Assisted Development
+
+This project was developed with the assistance of AI tools to enhance productivity and code quality:
+
+### AI Tools Used
+
+- **Claude (Anthropic)** - Primary AI assistant for code generation, architecture decisions, and problem-solving
+- **Code Completion** - AI-powered suggestions for faster development
+- **Documentation Generation** - AI assistance in creating comprehensive documentation
+
+### AI-Assisted Features
+
+- **Component Architecture**: AI helped design the modular component structure and styled-components organization
+- **Performance Optimizations**: React Query implementation and memoization strategies were AI-guided
+- **Responsive Design**: Mobile-first approach and breakpoint decisions were collaboratively designed
+
+
+## 🎨 Design Decisions
+
+### Architecture Choices
+
+#### **Styled Components over CSS Modules**
+
+- **Reasoning**: Better TypeScript integration, theme support, and component co-location
+- **Benefits**: Scoped styles, dynamic styling based on props, no naming conflicts
+- **Trade-offs**: Slightly larger bundle size, but better developer experience
+
+#### **React Query for Data Management**
+
+- **Reasoning**: Superior caching, background updates, and error handling compared to useState/useEffect
+- **Benefits**: Automatic retries, optimistic updates, offline support
+- **Configuration**: 10-15 minute stale times based on data volatility
+
+#### **Custom Dropdown vs Native Select**
+
+- **Problem**: Native `<select>` options can't be styled consistently across mobile browsers
+- **Solution**: Custom dropdown component with full styling control
+- **Benefits**: Large touch targets (60-65px), consistent UX across devices
+- **Trade-offs**: More complex implementation, but significantly better mobile experience
+
+#### **Mobile-First Responsive Design**
+
+- **Approach**: Start with mobile constraints, progressively enhance for larger screens
+- **Breakpoints**: 480px (mobile), 768px (tablet), 769px+ (desktop)
+- **Benefits**: Better performance on mobile, cleaner CSS, future-proof design
+
+### Performance Decisions
+
+#### **Memoization Strategy**
+
+```typescript
+// Expensive operations are memoized
+const availableSports = useMemo(() => {
+  // Only recalculate when leaguesData changes
+}, [leaguesData]);
+
+const filteredLeagues = useMemo(() => {
+  // Only refilter when dependencies change
+}, [leaguesData, searchTerm, selectedSport]);
+```
+
+#### **Component Optimization**
+
+- **React.memo**: Applied to LeagueRow to prevent unnecessary re-renders
+- **useCallback**: Stable function references for event handlers
+- **Lazy Loading**: Considered for future route-based code splitting
+
+### UX Design Decisions
+
+#### **Search & Filter Combination**
+
+- **Design**: Search input + sport dropdown side-by-side (desktop), stacked (mobile)
+- **Reasoning**: Users often want to search within a specific sport category
+- **Implementation**: Real-time filtering with debounced search for performance
+
+#### **Table vs Card Layout**
+
+- **Desktop**: Traditional table with zebra striping for data density
+- **Mobile**: Card layout for better touch interaction and readability
+- **Transition**: CSS media queries handle the responsive transformation
+
+
+### Typography & Visual Hierarchy
+
+#### **Font Choice: Raleway**
+
+- **Reasoning**: Modern, clean sans-serif with excellent readability
+- **Weights Used**: 400 (body), 500 (buttons), 600 (headers), 700 (titles)
+- **Performance**: Google Fonts with preconnect for faster loading
+
+
+### Accessibility Considerations
+
+#### **Touch Targets**
+
+- **Minimum Size**: 44px (WCAG AA compliance)
+- **Mobile Optimization**: 60-65px for better usability
+- **Spacing**: Adequate gaps between interactive elements
+
+#### **Keyboard Navigation**
+
+- **Focus Management**: Visible focus indicators on all interactive elements
+- **Tab Order**: Logical navigation flow through the interface
+- **Screen Readers**: Semantic HTML and ARIA labels where needed
+
+
+
+
+**Built with ❤️ using React, TypeScript, and modern web technologies**

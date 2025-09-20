@@ -3,83 +3,90 @@ import styled from "styled-components";
 
 
 const StyledTable = styled.div`
-  border: 1px solid var(--color-grey-200);
+  border: none;
   font-size: 1.4rem;
   font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: var(--color-grey-0);
-  border-radius: 7px;
-  overflow: hidden;
+  background-color: transparent;
+  overflow: visible;
+  margin-top: 30px;
 
-  @media (max-width: 768px) {
-    border: none;
-    background-color: transparent;
-    overflow: visible;,
-    margin-top:30px
+  @media (min-width: 769px) {
+    border: 1px solid var(--color-grey-200);
+    background-color: var(--color-grey-0);
+    border-radius: 7px;
+    overflow: hidden;
+    margin-top: 0;
   }
 `;
 interface CommonRowProps {
-  columns: string; // Adjust the type as needed
+  columns: string; 
 }
 
 
 const CommonRow = styled.div<CommonRowProps>`
   display: grid;
-  grid-template-columns: ${(props) => props.columns};
-  column-gap: 2.4rem;
+  grid-template-columns: 1fr;
+  column-gap: 0;
+  row-gap: 0.8rem;
   align-items: center;
   transition: none;
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    column-gap: 0;
-    row-gap: 0.8rem;
+  @media (min-width: 769px) {
+    grid-template-columns: ${(props) => props.columns};
+    column-gap: 2.4rem;
+    row-gap: 0;
   }
 `;
 
 const StyledHeader = styled(CommonRow)`
-  padding: 1.6rem 2.4rem;
-  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: var(--color-grey-50);
-  border-bottom: 1px solid var(--color-grey-100);
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  font-weight: 600;
-  color: var(--color-grey-600);
-
-  @media (max-width: 768px) {
-    display: none;
+  display: none;
+  
+  @media (min-width: 769px) {
+    display: grid;
+    padding: 1.6rem 2.4rem;
+    font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--color-grey-50);
+    border-bottom: 1px solid var(--color-grey-100);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+    color: var(--color-grey-600);
   }
 `;
 
 const StyledRow = styled(CommonRow)`
-  padding: 1.2rem 2.4rem;
+  padding: 1.6rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #dee2e6;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
+  &:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
 
-  /* Desktop styles */
   @media (min-width: 769px) {
+    padding: 1.2rem 2.4rem;
+    background-color: transparent;
+    border-radius: 0;
+    margin-bottom: 0;
+    box-shadow: none;
+    border: none;
+    transform: none;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--color-grey-100);
+    }
+
     &:hover {
       background-color: #e9ecef !important;
-    }
-  }
-
-  /* Mobile styles */
-  @media (max-width: 768px) {
-    padding: 1.6rem;
-    background-color: #ffffff !important;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid #dee2e6;
-    
-    &:hover {
-      background-color: #f0f0f0 !important;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      transform: none;
+      box-shadow: none;
     }
   }
 `;
@@ -87,7 +94,6 @@ const StyledRow = styled(CommonRow)`
 const StyledBody = styled.section`
   margin: 0.4rem 0;
 
-  /* Zebra striping for desktop - every odd row gets grey background */
   @media (min-width: 769px) {
     & > div:nth-child(odd) {
       background-color: #f8f9fa;
@@ -97,7 +103,6 @@ const StyledBody = styled.section`
       background-color: #ffffff;
     }
 
-    /* Hover effect for desktop */
     & > div:hover {
       background-color: #e9ecef !important;
       transition: background-color 0.2s ease;

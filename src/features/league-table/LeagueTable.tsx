@@ -13,35 +13,41 @@ export type LeaguepropsType = {
 
 // Styled Components
 const TableContainer = styled.div`
-  @media (max-width: 768px) {
-    margin: 0 -10px;
+  margin: 0 -10px;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  @media (min-width: 769px) {
+    margin: 0;
   }
 `;
 
 const ControlsContainer = styled.div`
   display: flex;
-  justify-content:center;
-  gap: 15px;
-  align-items: stretch;
-  flex-wrap: wrap;
-  margin: 80px 0 40px 0;
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 12px;
-    padding: 0 5px;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 5px;
+  margin: 20px 0;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  @media (min-width: 769px) {
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 80px 0 40px 0;
+    padding: 0;
   }
 `;
 
 const SearchInput = styled.input`
+  width: 100%;
   padding: 12px;
   font-size: 16px;
-  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   border: 1px solid #ccc;
   border-radius: 8px;
-  flex: 1;
-  min-width: 200px;
-  max-width: 400px;
+  box-sizing: border-box;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:focus {
@@ -50,18 +56,16 @@ const SearchInput = styled.input`
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
   }
 
-  @media (max-width: 768px) {
-    width: 100%;
-    max-width: none;
-    min-width: auto;
-    padding: 12px;
-    font-size: 16px;
-    box-sizing: border-box;
+  &:focus-visible {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
   }
 
-  @media (max-width: 480px) {
-    font-size: 16px;
-    padding: 12px;
+  @media (min-width: 769px) {
+    width: auto;
+    flex: 1;
+    min-width: 200px;
+    max-width: 400px;
   }
 `;
 
@@ -94,8 +98,6 @@ const Hline = styled.hr`
 `;
 
 const ErrorMessage = styled.div`
-  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
   font-size: 16px;
   text-align: center;
   padding: 40px 20px;
@@ -106,23 +108,20 @@ const ErrorMessage = styled.div`
   margin: 20px 0;
 `;
 
-// Custom Dropdown Components for better mobile control
 const DropdownContainer = styled.div`
   position: relative;
-  min-width: 200px;
+  width: 100%;
 
-  @media (max-width: 768px) {
-    width: 100%;
-    min-width: auto;
+  @media (min-width: 769px) {
+    width: auto;
+    min-width: 200px;
   }
 `;
 
 const DropdownButton = styled.button`
   width: 100%;
-  padding: 12px;
+  padding: 18px 16px;
   font-size: 16px;
-  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: white;
@@ -132,6 +131,7 @@ const DropdownButton = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
 
   &:focus {
     outline: none;
@@ -139,26 +139,23 @@ const DropdownButton = styled.button`
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
   }
 
-  @media (max-width: 768px) {
-    padding: 18px 16px;
-    font-size: 16px;
-    box-sizing: border-box;
+  &:focus-visible {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
   }
 
-  // @media (max-width: 480px) {
-  //   font-size: 16px;
-  //   padding: 20px 16px;
-  //   height: 65px;
-  // }
+  @media (min-width: 769px) {
+    padding: 12px;
+  }
 `;
 
 const DropdownArrow = styled.span<{ isOpen: boolean }>`
   transition: transform 0.2s ease;
   transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
-  font-size: 12px;
+  font-size: 16px;
 
-  @media (max-width: 768px) {
-    font-size: 16px;
+  @media (min-width: 769px) {
+    font-size: 12px;
   }
 `;
 
@@ -170,33 +167,35 @@ const DropdownList = styled.ul<{ isOpen: boolean }>`
   background-color: white;
   border: 1px solid #ccc;
   border-top: none;
-  border-radius: 0 0 8px 8px;
-  max-height: 200px;
+  border-radius: 0 0 12px 12px;
+  max-height: 300px;
   overflow-y: auto;
   z-index: 1000;
   margin: 0;
   padding: 0;
   list-style: none;
   display: ${(props) => (props.isOpen ? "block" : "none")};
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 
-  @media (max-width: 768px) {
-    max-height: 300px;
-    border-radius: 0 0 12px 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  @media (min-width: 769px) {
+    max-height: 200px;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 `;
 
 const DropdownItem = styled.li<{ isSelected: boolean }>`
-  padding: 12px 16px;
+  padding: 16px;
   font-size: 16px;
-  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   cursor: pointer;
   background-color: ${(props) => (props.isSelected ? "#f8f9fa" : "white")};
   color: #333;
   border-bottom: 1px solid #f0f0f0;
   transition: background-color 0.2s ease;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
 
   &:hover {
     background-color: #e9ecef;
@@ -206,16 +205,13 @@ const DropdownItem = styled.li<{ isSelected: boolean }>`
     border-bottom: none;
   }
 
-  @media (max-width: 768px) {
-    padding: 16px;
-    font-size: 16px;
-    min-height: 40px;
-    display: flex;
-    align-items: center;
+  @media (min-width: 769px) {
+    padding: 12px 16px;
+    min-height: auto;
+    display: block;
   }
 `;
 
-// Custom Dropdown Component
 function CustomDropdown({
   value,
   onChange,

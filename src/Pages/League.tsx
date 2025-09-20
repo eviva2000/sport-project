@@ -4,78 +4,86 @@ import { useLeagueSeasons } from "../hooks/useLeagueSeasons";
 
 // Styled Components
 const PageContainer = styled.div`
-  padding: 20px;
-  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  /* Mobile-first: Start with mobile styles */
+  padding: 15px;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  @media (max-width: 768px) {
-    padding: 15px;
+  /* Desktop styles */
+  @media (min-width: 769px) {
+    padding: 20px;
   }
 `;
 
 const BackButton = styled.button`
-  margin-bottom: 20px;
-  padding: 10px 15px;
-  background-color: #007bff;
+  /* Mobile-first: Start with mobile styles */
+  padding: 12px 18px;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 25px;
+  background-color: #e41827;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-weight: 500;
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #e8394a;
   }
 
-  @media (max-width: 768px) {
-    padding: 12px 18px;
-    font-size: 16px;
-    width: 100%;
-    margin-bottom: 25px;
+  /* Desktop styles */
+  @media (min-width: 769px) {
+    padding: 10px 15px;
+    font-size: 14px;
+    width: auto;
+    margin-bottom: 20px;
   }
 `;
 
 const ContentContainer = styled.div`
+  /* Mobile-first: Start with mobile styles */
   text-align: center;
-  max-width: 400px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 20px;
-  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  padding: 15px;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  @media (max-width: 768px) {
-    max-width: 100%;
-    padding: 15px;
+  /* Desktop styles */
+  @media (min-width: 769px) {
+    max-width: 400px;
+    padding: 20px;
   }
 `;
 
 const LeagueTitle = styled.h1`
-  margin-bottom: 10px;
-  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  /* Mobile-first: Start with mobile styles */
+  font-size: 24px;
+  margin-bottom: 15px;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-weight: 700;
   color: #333;
 
-  @media (max-width: 768px) {
-    font-size: 24px;
-    margin-bottom: 15px;
+  /* Desktop styles */
+  @media (min-width: 769px) {
+    font-size: 32px;
+    margin-bottom: 10px;
   }
 `;
 
 const SportText = styled.p`
-  font-size: 18px;
+  /* Mobile-first: Start with mobile styles */
+  font-size: 16px;
   color: #666;
-  margin-bottom: 30px;
-  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  margin-bottom: 25px;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-weight: 400;
 
-  @media (max-width: 768px) {
-    font-size: 16px;
-    margin-bottom: 25px;
+  /* Desktop styles */
+  @media (min-width: 769px) {
+    font-size: 18px;
+    margin-bottom: 30px;
   }
 `;
 
@@ -87,34 +95,31 @@ const BadgeContainer = styled.div`
 `;
 
 const BadgeImage = styled.img`
-  max-width: 200px;
-  max-height: 200px;
+  /* Mobile-first: Start with mobile styles */
+  max-width: 150px;
+  max-height: 150px;
   width: auto;
   height: auto;
   object-fit: contain;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 10px;
+  padding: 8px;
   background-color: #f9f9f9;
   display: block;
   margin: 0 auto;
 
-  @media (max-width: 768px) {
-    max-width: 150px;
-    max-height: 150px;
-    padding: 8px;
-  }
-
-  @media (max-width: 480px) {
-    max-width: 150px;
-    max-height: 150px;
-    padding: 6px;
+  /* Desktop styles */
+  @media (min-width: 769px) {
+    max-width: 200px;
+    max-height: 200px;
+    padding: 10px;
   }
 `;
 
 const NoBadgeContainer = styled.div`
-  width: 200px;
-  height: 200px;
+  /* Mobile-first: Start with mobile styles */
+  width: 150px;
+  height: 150px;
   background-color: #eee;
   display: flex;
   align-items: center;
@@ -122,22 +127,16 @@ const NoBadgeContainer = styled.div`
   margin: 0 auto;
   border-radius: 8px;
   border: 1px solid #ddd;
-  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: #666;
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
 
-  @media (max-width: 768px) {
-    width: 150px;
-    height: 150px;
-    font-size: 12px;
-  }
-
-  @media (max-width: 480px) {
-    width: 120px;
-    height: 120px;
-    font-size: 11px;
+  /* Desktop styles */
+  @media (min-width: 769px) {
+    width: 200px;
+    height: 200px;
+    font-size: 14px;
   }
 `;
 
@@ -151,14 +150,23 @@ function League() {
   const { data: firstSeason, isLoading, error } = useLeagueSeasons(id);
 
   if (isLoading) {
-    return <div style={{ padding: "20px" }}>Loading league details...</div>;
+    return (
+      <div style={{ padding: "20px" }} role="status" aria-live="polite">
+        Loading league details...
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div style={{ padding: "20px" }}>
+      <div style={{ padding: "20px" }} role="alert">
         <p style={{ color: "red" }}>Error: {error.message}</p>
-        <button onClick={() => navigate("/home")}>Back to Home</button>
+        <button 
+          onClick={() => navigate("/home")}
+          aria-label="Go back to leagues list"
+        >
+          Back to Home
+        </button>
       </div>
     );
   }

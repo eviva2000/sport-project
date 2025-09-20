@@ -4,28 +4,22 @@ import { useNavigate } from "react-router-dom";
 import type { LeaguepropsType } from "./LeagueTable";
 import { Row } from "./Table.";
 
-// Styled Components
 const DesktopView = styled.div`
-  display: block;
-  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-
-  @media (max-width: 768px) {
-    display: none !important;
+  display: none;
+  @media (min-width: 769px) {
+    display: block;
   }
 `;
 
 const MobileView = styled.div`
-  display: none;
-  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-
-  @media (max-width: 768px) {
-    display: block !important;
+  display: block;
+  @media (min-width: 769px) {
+    display: none;
   }
 `;
 
 const MobileLeagueName = styled.div`
   margin-bottom: 12px;
-  
   strong {
     font-size: 16px;
     color: #333;
@@ -81,9 +75,13 @@ function LeagueRow({ league, key }: LeagueRowProps) {
           <strong>{league.strLeague}</strong>
         </MobileLeagueName>
         <MobileDetails>
-          <span><strong>Sport:</strong> {league.strSport}</span>
+          <span>
+            <strong>Sport:</strong> {league.strSport}
+          </span>
           {league.strLeagueAlternate && (
-            <span><strong>Alt:</strong> {league.strLeagueAlternate}</span>
+            <span>
+              <strong>Alt:</strong> {league.strLeagueAlternate}
+            </span>
           )}
         </MobileDetails>
       </MobileView>
