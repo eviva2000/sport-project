@@ -94,16 +94,18 @@ function Header({ children}: HeaderProps) {
 
 type RowProps = {
   children: React.ReactNode;
+  onClick?: () => void;
+  style?: React.CSSProperties;
 };
 
-function Row({ children }: RowProps) {
+function Row({ children, onClick, style }: RowProps) {
   const context = useContext(TableContext);
   if (!context) {
     throw new Error("Row must be used within a Table");
   }
   const { columns } = context;
   return (
-    <StyledRow role="row" columns={columns}>
+    <StyledRow role="row" columns={columns} onClick={onClick} style={style}>
       {children}
     </StyledRow>
   );

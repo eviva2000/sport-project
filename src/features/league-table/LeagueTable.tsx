@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { Body, Header, Table } from "./Table.";
 import LeagueRow from "./LeagueRow";
+import { useLeagues } from "../../hooks/useLeagues";
 
 export type LeaguepropsType = {
   idLeague: string;
@@ -10,58 +11,33 @@ export type LeaguepropsType = {
 };
 
 function LeagueTable() {
-  const [leaguesData, setLeaguesData] = useState<LeaguepropsType[]>([]);
-  const [filteredLeagues, setFilteredLeagues] = useState<LeaguepropsType[]>([]);
+  const { data: leaguesData = [], isLoading, error } = useLeagues();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSport, setSelectedSport] = useState("");
-  const [availableSports, setAvailableSports] = useState<string[]>([]);
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const fetchLeagueData = async () => {
-      try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setLeaguesData(data.leagues);
-        setFilteredLeagues(data.leagues);
 
-        const sports = [
-          ...new Set(
-            data.leagues.map((league: LeaguepropsType) => league.strSport)
-          ),
-        ] as string[];
-        setAvailableSports(sports.sort());
-      } catch (error) {
-        console.error("Error fetching league data:", error);
-      } finally {
-        setLoading(false); 
-      }
-    };
+  // Memoize available sports to avoid recalculation
+  const availableSports = useMemo(() => {
+    if (!leaguesData.length) return [];
+    const sports = [...new Set(leaguesData.map(league => league.strSport))] as string[];
+    return sports.sort();
+  }, [leaguesData]);
 
-    fetchLeagueData();
-  }, [apiUrl]);
-
-  // Filter leagues based on search term and sport type
-  useEffect(() => {
+  // Memoize filtered leagues for better performance
+  const filteredLeagues = useMemo(() => {
     let filtered = leaguesData;
 
-    // Filter by search term
     if (searchTerm) {
       filtered = filtered.filter((league) =>
         league.strLeague.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Filter by sport type
     if (selectedSport) {
       filtered = filtered.filter((league) => league.strSport === selectedSport);
     }
 
-    setFilteredLeagues(filtered);
-  }, [searchTerm, selectedSport, leaguesData]);
+    return filtered;
+  }, [leaguesData, searchTerm, selectedSport]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -71,8 +47,12 @@ function LeagueTable() {
     setSelectedSport(event.target.value);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return <div>Loading leagues...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading leagues: {error.message}</div>;
   }
 
   return (
