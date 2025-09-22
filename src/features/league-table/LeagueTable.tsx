@@ -196,9 +196,21 @@ const DropdownItem = styled.li<{ isSelected: boolean }>`
   min-height: 40px;
   display: flex;
   align-items: center;
+  outline: none;
 
   &:hover {
     background-color: #e9ecef;
+  }
+
+  &:focus {
+    background-color: #e3f2fd;
+    outline: 2px solid #007bff;
+    outline-offset: -2px;
+  }
+
+  &[aria-selected="true"] {
+    background-color: #f8f9fa;
+    font-weight: 600;
   }
 
   &:last-child {
@@ -222,9 +234,15 @@ function CustomDropdown({
   options: string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
   const displayValue = value || "All Sports";
+  const allOptions = ["", ...options]; // Include "All Sports" option
+  const dropdownId = "sport-filter-dropdown";
+  const buttonId = "sport-filter-button";
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -233,6 +251,7 @@ function CustomDropdown({
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
+        setFocusedIndex(-1);
       }
     }
 
@@ -242,33 +261,170 @@ function CustomDropdown({
     };
   }, []);
 
+  // Scroll focused item into view
+  useEffect(() => {
+    if (isOpen && focusedIndex >= 0 && listRef.current) {
+      const focusedElement = listRef.current.children[focusedIndex] as HTMLElement;
+      if (focusedElement) {
+        focusedElement.scrollIntoView({
+          block: 'nearest',
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [focusedIndex, isOpen]);
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    switch (event.key) {
+      case "Enter":
+      case " ":
+        event.preventDefault();
+        if (!isOpen) {
+          setIsOpen(true);
+          setFocusedIndex(0);
+        } else if (focusedIndex >= 0) {
+          handleSelect(allOptions[focusedIndex]);
+        }
+        break;
+      case "Escape":
+        event.preventDefault();
+        setIsOpen(false);
+        setFocusedIndex(-1);
+        buttonRef.current?.focus();
+        break;
+      case "ArrowDown":
+        event.preventDefault();
+        if (!isOpen) {
+          setIsOpen(true);
+          setFocusedIndex(0);
+        } else {
+          setFocusedIndex((prev) => 
+            prev < allOptions.length - 1 ? prev + 1 : 0
+          );
+        }
+        break;
+      case "ArrowUp":
+        event.preventDefault();
+        if (isOpen) {
+          setFocusedIndex((prev) => 
+            prev > 0 ? prev - 1 : allOptions.length - 1
+          );
+        }
+        break;
+      case "Home":
+        if (isOpen) {
+          event.preventDefault();
+          setFocusedIndex(0);
+        }
+        break;
+      case "End":
+        if (isOpen) {
+          event.preventDefault();
+          setFocusedIndex(allOptions.length - 1);
+        }
+        break;
+      case "Tab":
+        if (isOpen) {
+          setIsOpen(false);
+          setFocusedIndex(-1);
+        }
+        break;
+    }
+  };
+
   const handleSelect = (selectedValue: string) => {
     onChange(selectedValue);
     setIsOpen(false);
+    setFocusedIndex(-1);
+    buttonRef.current?.focus();
+    
+    // Announce selection to screen readers
+    const announcement = selectedValue === "" ? "All Sports selected" : `${selectedValue} selected`;
+    // Create a temporary element for screen reader announcement
+    const announcer = document.createElement('div');
+    announcer.setAttribute('aria-live', 'polite');
+    announcer.setAttribute('aria-atomic', 'true');
+    announcer.style.position = 'absolute';
+    announcer.style.left = '-10000px';
+    announcer.textContent = announcement;
+    document.body.appendChild(announcer);
+    setTimeout(() => document.body.removeChild(announcer), 1000);
+  };
+
+  const handleItemClick = (selectedValue: string, index: number) => {
+    setFocusedIndex(index);
+    handleSelect(selectedValue);
+  };
+
+  const getItemAriaLabel = (sport: string, index: number) => {
+    const isSelected = (sport === "" && value === "") || (sport === value);
+    const position = `${index + 1} of ${allOptions.length}`;
+    const sportName = sport === "" ? "All Sports" : sport;
+    return `${sportName}, ${position}${isSelected ? ", selected" : ""}`;
   };
 
   return (
     <DropdownContainer ref={dropdownRef}>
-      <DropdownButton type="button" onClick={() => setIsOpen(!isOpen)}>
+      <DropdownButton 
+        ref={buttonRef}
+        type="button" 
+        onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={handleKeyDown}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-labelledby={buttonId}
+        aria-describedby={`${buttonId}-description`}
+        id={buttonId}
+      >
         <span>{displayValue}</span>
-        <DropdownArrow isOpen={isOpen}>▼</DropdownArrow>
+        <DropdownArrow isOpen={isOpen} aria-hidden="true">▼</DropdownArrow>
       </DropdownButton>
-      <DropdownList isOpen={isOpen}>
+      
+      {/* Hidden description for screen readers */}
+      <span id={`${buttonId}-description`} style={{ display: 'none' }}>
+        Use arrow keys to navigate options, Enter to select, Escape to close
+      </span>
+
+      <DropdownList 
+        ref={listRef}
+        isOpen={isOpen}
+        role="listbox"
+        aria-labelledby={buttonId}
+        id={dropdownId}
+        aria-activedescendant={focusedIndex >= 0 ? `${dropdownId}-option-${focusedIndex}` : undefined}
+      >
         <DropdownItem
           isSelected={value === ""}
-          onClick={() => handleSelect("")}
+          onClick={() => handleItemClick("", 0)}
+          role="option"
+          aria-selected={value === ""}
+          id={`${dropdownId}-option-0`}
+          aria-label={getItemAriaLabel("", 0)}
+          style={{ 
+            backgroundColor: focusedIndex === 0 ? '#e9ecef' : undefined 
+          }}
         >
           All Sports
         </DropdownItem>
-        {options.map((sport) => (
-          <DropdownItem
-            key={sport}
-            isSelected={value === sport}
-            onClick={() => handleSelect(sport)}
-          >
-            {sport}
-          </DropdownItem>
-        ))}
+        {options.map((sport, index) => {
+          const optionIndex = index + 1;
+          return (
+            <DropdownItem
+              key={sport}
+              isSelected={value === sport}
+              onClick={() => handleItemClick(sport, optionIndex)}
+              role="option"
+              aria-selected={value === sport}
+              id={`${dropdownId}-option-${optionIndex}`}
+              aria-label={getItemAriaLabel(sport, optionIndex)}
+              style={{ 
+                backgroundColor: focusedIndex === optionIndex ? '#e9ecef' : undefined 
+              }}
+            >
+              {sport}
+            </DropdownItem>
+          );
+        })}
       </DropdownList>
     </DropdownContainer>
   );

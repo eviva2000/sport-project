@@ -1,11 +1,11 @@
-import { createContext,useContext } from "react";
+import { createContext, useContext } from "react";
 import styled from "styled-components";
-
 
 const StyledTable = styled.div`
   border: none;
   font-size: 1.4rem;
-  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   background-color: transparent;
   overflow: visible;
   margin-top: 30px;
@@ -19,9 +19,8 @@ const StyledTable = styled.div`
   }
 `;
 interface CommonRowProps {
-  columns: string; 
+  columns: string;
 }
-
 
 const CommonRow = styled.div<CommonRowProps>`
   display: grid;
@@ -40,11 +39,12 @@ const CommonRow = styled.div<CommonRowProps>`
 
 const StyledHeader = styled(CommonRow)`
   display: none;
-  
+
   @media (min-width: 769px) {
     display: grid;
     padding: 1.6rem 2.4rem;
-    font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
     background-color: var(--color-grey-50);
     border-bottom: 1px solid var(--color-grey-100);
     text-transform: uppercase;
@@ -62,12 +62,25 @@ const StyledRow = styled(CommonRow)`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid #dee2e6;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
     background-color: #f0f0f0;
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+    background-color: #e3f2fd;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+    background-color: #e3f2fd;
   }
 
   @media (min-width: 769px) {
@@ -88,6 +101,16 @@ const StyledRow = styled(CommonRow)`
       transform: none;
       box-shadow: none;
     }
+
+    &:focus {
+      background-color: #e3f2fd !important;
+      transform: none;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      background-color: #e3f2fd !important;
+    }
   }
 `;
 
@@ -98,7 +121,7 @@ const StyledBody = styled.section`
     & > div:nth-child(odd) {
       background-color: #f8f9fa;
     }
-    
+
     & > div:nth-child(even) {
       background-color: #ffffff;
     }
@@ -113,11 +136,11 @@ const StyledBody = styled.section`
 const Empty = styled.p`
   font-size: 1.6rem;
   font-weight: 500;
-  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   text-align: center;
   margin: 2.4rem;
 `;
-
 
 type TableContextType = {
   columns: string;
@@ -125,26 +148,24 @@ type TableContextType = {
 
 const TableContext = createContext<TableContextType | undefined>(undefined);
 
-
 type TableProps = {
   columns: string;
   children: React.ReactNode;
-}
+};
 
 function Table({ columns, children }: TableProps) {
-    return (
-      <TableContext.Provider value={{ columns }}>
-        <StyledTable role="table">{children}</StyledTable>
-      </TableContext.Provider>
-    );
-  }
+  return (
+    <TableContext.Provider value={{ columns }}>
+      <StyledTable role="table">{children}</StyledTable>
+    </TableContext.Provider>
+  );
+}
 
-  type HeaderProps = {
-    children: React.ReactNode;
-  };
-  
+type HeaderProps = {
+  children: React.ReactNode;
+};
 
-function Header({ children}: HeaderProps) {
+function Header({ children }: HeaderProps) {
   const context = useContext(TableContext);
   if (!context) {
     throw new Error("Header must be used within a Table");
@@ -160,17 +181,46 @@ function Header({ children}: HeaderProps) {
 type RowProps = {
   children: React.ReactNode;
   onClick?: () => void;
+  onKeyDown?: (event: React.KeyboardEvent) => void;
   style?: React.CSSProperties;
+  tabIndex?: number;
+  "aria-label"?: string;
+  role?: string;
 };
 
-function Row({ children, onClick, style }: RowProps) {
+function Row({
+  children,
+  onClick,
+  onKeyDown,
+  style,
+  tabIndex = 0,
+  "aria-label": ariaLabel,
+  role = "button",
+}: RowProps) {
   const context = useContext(TableContext);
   if (!context) {
     throw new Error("Row must be used within a Table");
   }
   const { columns } = context;
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onClick?.();
+    }
+    onKeyDown?.(event);
+  };
+
   return (
-    <StyledRow role="row" columns={columns} onClick={onClick} style={style}>
+    <StyledRow
+      role={role}
+      columns={columns}
+      onClick={onClick}
+      onKeyDown={handleKeyDown}
+      style={style}
+      tabIndex={tabIndex}
+      aria-label={ariaLabel}
+    >
       {children}
     </StyledRow>
   );
@@ -182,12 +232,10 @@ type BodyProps<T> = {
 };
 
 function Body<T>({ data, render }: BodyProps<T>) {
-  console.log(data)
+  console.log(data);
   if (!data.length) return <Empty>No data to show at the moment!</Empty>;
 
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
-
 export { Table, Header, Row, Body };
-  

@@ -56,8 +56,17 @@ function LeagueRow({ league, key }: LeagueRowProps) {
     );
   }, [navigate, league.idLeague, league.strLeague, league.strSport]);
 
+  const ariaLabel = `View details for ${league.strLeague} league in ${league.strSport}`;
+
   return (
-    <Row key={key} onClick={handleClick} style={{ cursor: "pointer" }}>
+    <Row 
+      key={key} 
+      onClick={handleClick} 
+      style={{ cursor: "pointer" }}
+      aria-label={ariaLabel}
+      role="button"
+      tabIndex={0}
+    >
       {/* Desktop view */}
       <DesktopView>
         <span>{league.strLeague}</span>

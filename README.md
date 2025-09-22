@@ -126,13 +126,6 @@ A responsive React application for browsing and exploring sports leagues from ar
 - **Mobile**: Card-based layout with stacked information
 - **Navigation**: Full-width buttons and touch-friendly spacing
 
-## 🔧 API Integration
-
-### Data Sources
-
-- **League List**: TheSportsDB API for comprehensive league data
-- **League Details**: Season and badge information per league
-- **Caching Strategy**: 10-15 minute cache with background updates
 
 ### Error Handling
 
@@ -159,18 +152,6 @@ staleTime: 15 * 60 * 1000;
 - **useCallback**: Stable function references
 - **Code Splitting**: Lazy loading for better initial load times
 
-## 🧪 Testing
-
-```bash
-# Run tests
-npm run test
-
-# Run tests with coverage
-npm run test:coverage
-
-# Run tests in watch mode
-npm run test:watch
-```
 
 ## 🏗️ Building for Production
 
