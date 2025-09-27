@@ -163,24 +163,6 @@ npm run build
 npm run preview
 ```
 
-
-## 🤖 AI-Assisted Development
-
-This project was developed with the assistance of AI tools to enhance productivity and code quality:
-
-### AI Tools Used
-
-- **Claude (Anthropic)** - Primary AI assistant for code generation, architecture decisions, and problem-solving
-- **Code Completion** - AI-powered suggestions for faster development
-- **Documentation Generation** - AI assistance in creating comprehensive documentation
-
-### AI-Assisted Features
-
-- **Component Architecture**: AI helped design the modular component structure and styled-components organization
-- **Performance Optimizations**: React Query implementation and memoization strategies were AI-guided
-- **Responsive Design**: Mobile-first approach and breakpoint decisions were collaboratively designed
-
-
 ## 🎨 Design Decisions
 
 ### Architecture Choices
